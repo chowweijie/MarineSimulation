@@ -11,6 +11,7 @@ public class Node
     public int gCost;
     public int hCost;
     public Node parent;
+    public bool occupied;
 
     public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
     {
@@ -18,6 +19,7 @@ public class Node
         worldPosition = _worldPos;
         gridX = _gridX;
         gridY = _gridY;
+        occupied = false;
     }
 
     public int fCost

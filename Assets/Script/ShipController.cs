@@ -5,8 +5,9 @@ using UnityEngine;
 public class ShipController : MonoBehaviour
 {
     public Transform target;
+    public AStarGrid grid;
     private PathFinding pathFinder;
-    private List<Node> path;
+    private List<Node> path = new List<Node>();
     private int targetIndex;
     public float speed = 1f;
     public float waypointDistance = 0.5f;
@@ -17,6 +18,11 @@ public class ShipController : MonoBehaviour
         if (target == null) {
         Debug.LogError("Target not assigned in the ShipController!");
         }
+        if (grid == null) {
+        Debug.LogError("Grid not assigned in the ShipController!");
+        }
+        grid = FindObjectOfType<AStarGrid>();
+        OccupyNode();
         pathFinder = FindObjectOfType<PathFinding>();
         InvokeRepeating("UpdatePath", 0f, 5f);
     }
@@ -37,6 +43,8 @@ public class ShipController : MonoBehaviour
             return;
         }
 
+        FreeNode();
+
         if (targetIndex < path.Count) {
             Vector3 dir = path[targetIndex].worldPosition - transform.position;
             transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
@@ -46,6 +54,20 @@ public class ShipController : MonoBehaviour
                 targetIndex++;
             }
         }
+
+        OccupyNode();
+    }
+
+    void OccupyNode()
+    {
+        Node node = grid.NodeFromWorldPoint(transform.position);
+        node.occupied = true;
+    }
+
+    void FreeNode()
+    {
+        Node node = grid.NodeFromWorldPoint(transform.position);
+        node.occupied = false;
     }
 
     private void OnDrawGizmos()
@@ -56,8 +78,11 @@ public class ShipController : MonoBehaviour
             Gizmos.color = Color.green;
 
             // Draw a sphere at the target node's world position
-            Gizmos.DrawSphere(path[targetIndex].worldPosition, 200f);
-            Gizmos.DrawSphere(target.position,200f); // Radius 0.5f (adjust as needed)
+            if (path != null && path.Count > 0)
+            {
+                Gizmos.DrawSphere(path[targetIndex].worldPosition, 100f);
+            }
+            Gizmos.DrawSphere(target.position,100f); // Radius 0.5f (adjust as needed)
         }
 
         if (path != null)

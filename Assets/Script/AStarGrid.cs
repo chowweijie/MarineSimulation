@@ -66,6 +66,10 @@ public class AStarGrid : MonoBehaviour
                 int checkY = node.gridY + y;
                 if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
+                    if(grid[checkX, checkY].occupied)
+                    {
+                        continue;
+                    }
                     neighbours.Add(grid[checkX, checkY]);
                 }
             }
@@ -88,7 +92,7 @@ public class AStarGrid : MonoBehaviour
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
         if (grid != null) {
             foreach (Node n in grid) {
-                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                Gizmos.color = (n.walkable && !n.occupied) ? Color.white : Color.red;
                 Gizmos.DrawWireSphere(n.worldPosition, nodeRadius);
             }
         }
