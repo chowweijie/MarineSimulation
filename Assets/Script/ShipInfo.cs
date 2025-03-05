@@ -6,5 +6,5 @@ public class ShipInfo
 {
     public string shipName = "Ship";
     public float speed = 1.0f;
-    public string targetName;
+    public string targetName = "Berth 1";
 }

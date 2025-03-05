@@ -18,8 +18,8 @@ public class ShipUIManager : MonoBehaviour
     public void AddShip(){
         ShipInfo newShip = new ShipInfo(){
             shipName = "Ship " + (shipList.Count + 1),
-            speed = 1.0f,
-            targetName = "Target 1"
+            speed = 100f,
+            targetName = "Berth 1"
         };
         shipList.Add(newShip);
         UpdateShipList();
@@ -43,5 +43,16 @@ public class ShipUIManager : MonoBehaviour
             ShipItemUI shipUI = Instantiate(shipItemUIPrefab, shipListContent).GetComponent<ShipItemUI>();
             shipUI.SetShipInfo(ship);
         }
+    }
+
+    public void SaveShipList(){
+        PlayerPrefs.SetInt("ShipCount", shipList.Count);
+        for (int i = 0; i < shipList.Count; i++)
+        {
+            PlayerPrefs.SetString("ShipName" + i, shipList[i].shipName);
+            PlayerPrefs.SetFloat("ShipSpeed" + i, shipList[i].speed);
+            PlayerPrefs.SetString("ShipTarget" + i, shipList[i].targetName);
+        }
+        PlayerPrefs.Save();
     }
 }

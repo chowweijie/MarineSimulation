@@ -11,11 +11,11 @@ public class ShipItemUI : MonoBehaviour
     public TMP_Dropdown targetDropdown;
     public Button saveButton;
     private List<string> targetOptions = new List<string>(){
-            "Target 1",
-            "Target 2",
-            "Target 3",
-            "Target 4",
-            "Target 5"
+            "Berth 1",
+            "Berth 2",
+            "Berth 3",
+            "Berth 4",
+            "Berth 5"
     };
     private ShipInfo ship;
     

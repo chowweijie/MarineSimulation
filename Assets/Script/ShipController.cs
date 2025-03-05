@@ -18,13 +18,25 @@ public class ShipController : MonoBehaviour
         if (target == null) {
         Debug.LogError("Target not assigned in the ShipController!");
         }
+        grid = FindObjectOfType<AStarGrid>();
         if (grid == null) {
         Debug.LogError("Grid not assigned in the ShipController!");
         }
-        grid = FindObjectOfType<AStarGrid>();
         OccupyNode();
         pathFinder = FindObjectOfType<PathFinding>();
         InvokeRepeating("UpdatePath", 0f, 5f);
+    }
+
+    public void SetShipData(ShipInfo shipData)
+    {
+        if (GameObject.Find(shipData.targetName) == null)
+        {
+            Debug.LogError(shipData.targetName + " is null");
+            return;
+        }
+        gameObject.name = shipData.shipName;
+        target = GameObject.Find(shipData.targetName).transform;
+        speed = shipData.speed;
     }
 
     void UpdatePath()
