@@ -10,16 +10,15 @@ public class ShipItemUI : MonoBehaviour
     public Slider speedInput;
     public TMP_Dropdown targetDropdown;
     public Button saveButton;
-    private List<string> targetOptions = new List<string>(){
-            "Berth 1",
-            "Berth 2",
-            "Berth 3",
-            "Berth 4",
-            "Berth 5"
-    };
+    private List<string> targetOptions = new List<string>();
+    private int NoOfBerths = 38;
     private ShipInfo ship;
     
     public void SetShipInfo(ShipInfo shipRef){
+        for (int i = 1; i <= NoOfBerths; i++)
+        {
+            targetOptions.Add("Berth " + i);
+        }
         if(shipRef == null){
             Debug.LogError("ShipInfo is null");
             return;

@@ -35,6 +35,7 @@ public class AStarGrid : MonoBehaviour
     {
         grid = new Node[gridSizeX, gridSizeY];
         LayerMask unwalkableMask = LayerMask.GetMask("unwalkableMask");
+        LayerMask berths = LayerMask.GetMask("Berths");
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -45,6 +46,10 @@ public class AStarGrid : MonoBehaviour
                 if (Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask))
                 {
                     walkable = false;
+                }
+                if (Physics.CheckSphere(worldPoint, nodeRadius, berths))
+                {
+                    walkable = true;
                 }
                 grid[x, y] = new Node(walkable, worldPoint, x, y);
             }

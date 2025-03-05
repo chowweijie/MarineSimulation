@@ -92,9 +92,9 @@ public class ShipController : MonoBehaviour
             // Draw a sphere at the target node's world position
             if (path != null && path.Count > 0)
             {
-                Gizmos.DrawSphere(path[targetIndex].worldPosition, 100f);
+                Gizmos.DrawSphere(path[targetIndex].worldPosition, 50f);
             }
-            Gizmos.DrawSphere(target.position,100f); // Radius 0.5f (adjust as needed)
+            Gizmos.DrawSphere(target.position,50f); // Radius 0.5f (adjust as needed)
         }
 
         if (path != null)
