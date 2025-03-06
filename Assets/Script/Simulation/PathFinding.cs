@@ -15,8 +15,8 @@ public class PathFinding : MonoBehaviour
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
-        Debug.Log("Start node: " + startNode.gridX + ", " + startNode.gridY);
-        Debug.Log("Target node: " + targetNode.gridX + ", " + targetNode.gridY);
+        // Debug.Log("Start node: " + startNode.gridX + ", " + startNode.gridY);
+        // Debug.Log("Target node: " + targetNode.gridX + ", " + targetNode.gridY);
 
         List<Node> openSet = new List<Node>();
         HashSet<Node> closeSet = new HashSet<Node>();
@@ -65,7 +65,7 @@ public class PathFinding : MonoBehaviour
                         openSet.Add(neighbour);
                     }
                 }
-                Debug.Log("Open set count: " + openSet.Count);
+                // Debug.Log("Open set count: " + openSet.Count);
             }
         }
 
@@ -86,7 +86,7 @@ public class PathFinding : MonoBehaviour
         path.Reverse();
         foreach (Node node in path)
         {
-            Debug.Log("Path: " + node.gridX + ", " + node.gridY);
+            // Debug.Log("Path: " + node.gridX + ", " + node.gridY);
         }
         return path;
     }
