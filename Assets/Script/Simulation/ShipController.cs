@@ -41,7 +41,7 @@ public class ShipController : MonoBehaviour
 
     void UpdatePath()
     {
-        Debug.Log("Updating path");
+        // Debug.Log("Updating path");
         path = pathFinder.FindPath(transform.position, target.position);
         targetIndex = 0;
     }
@@ -51,7 +51,7 @@ public class ShipController : MonoBehaviour
     {
         if (path == null || path.Count == 0)
         {
-            Debug.Log("No path found");
+            // Debug.Log("No path found");
             return;
         }
 
