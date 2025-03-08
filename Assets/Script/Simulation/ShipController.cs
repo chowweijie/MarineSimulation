@@ -11,6 +11,7 @@ public class ShipController : MonoBehaviour
     private int targetIndex;
     public float speed = 1f;
     public float waypointDistance = 0.5f;
+    private float turnSpeed = 50f;
 
     // Start is called before the first frame update
     void Start()
@@ -59,8 +60,17 @@ public class ShipController : MonoBehaviour
 
         if (targetIndex < path.Count) {
             Vector3 dir = path[targetIndex].worldPosition - transform.position;
-            transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
-
+            float angleDiff = Vector3.Angle(transform.forward, dir.normalized);
+            // Debug.Log("Angle diff: " + angleDiff);
+            if (angleDiff > 0.5f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(dir.normalized);
+                transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+            }
+            else
+            {
+                transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
+            }
             if (Vector3.Distance(transform.position, path[targetIndex].worldPosition) < waypointDistance)
             {
                 targetIndex++;

@@ -11,6 +11,7 @@ public class ShipSpawner : MonoBehaviour
     private float lambda = 0.1f;
     private int maxTicks = 10;
     int[] possibleSize = { 100, 200, 300, 400 };
+    private Quaternion rotation = Quaternion.Euler(0, 90, 0);
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +37,7 @@ public class ShipSpawner : MonoBehaviour
             };
 
             yield return new WaitForSeconds(spawnInterval);
-            GameObject newShip = Instantiate(shipPrefab, GetRandomPosition(), Quaternion.identity);
+            GameObject newShip = Instantiate(shipPrefab, GetRandomPosition(), rotation);
             float zScale = possibleSize[Random.Range(0, possibleSize.Length)];
             newShip.transform.localScale = new Vector3(50, 15, zScale);
             ShipController shipController = newShip.GetComponent<ShipController>();
@@ -63,6 +64,9 @@ public class ShipSpawner : MonoBehaviour
         {
             Debug.LogError("Spawn Area is not set!");
             return Vector3.zero;
+        }
+        if (spawnArea.name == "SpawnAreaRight"){
+            rotation = Quaternion.Euler(0, -90, 0);
         }
         Vector3 center = spawnArea.transform.position;
         Vector3 size = spawnArea.size;
