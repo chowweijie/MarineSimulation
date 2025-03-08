@@ -29,11 +29,21 @@ public class ShipSpawner : MonoBehaviour
 
         while (isSpawning && tickCount < maxTicks)
         {
+            if (BerthManager.Instance == null)
+            {
+                Debug.LogError("BerthManager is not initialized! Make sure it is present in the scene.");
+            }
+            string targetBerth = BerthManager.Instance.GetAvailableBerth();
+            if (targetBerth == null)
+            {
+                Debug.Log("No available berth!");
+                yield break;
+            }
             ShipInfo ship = new ShipInfo()
             {
                 shipName = "Ship " + shipCount,
                 speed = 100f,
-                targetName = "Berth " + Random.Range(1, 38)
+                targetName = targetBerth
             };
 
             yield return new WaitForSeconds(spawnInterval);

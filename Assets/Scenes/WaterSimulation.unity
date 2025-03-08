@@ -473,6 +473,53 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 1499252094}
   m_SourcePrefab: {fileID: 100100000, guid: 9e656f6dbb3ed0f48b10ecb5d071dc56, type: 3}
+--- !u!1 &180379294
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 180379296}
+  - component: {fileID: 180379295}
+  m_Layer: 0
+  m_Name: BerthManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &180379295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180379294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74c01df12db0b94c8d82f495314ee79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableBerths: []
+  occupiedBerths: []
+  maxBerths: 38
+--- !u!4 &180379296
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180379294}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -1803.2341, y: 260.9991, z: 6788.2197}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &191308317
 GameObject:
   m_ObjectHideFlags: 0
@@ -3126,3 +3173,4 @@ SceneRoots:
   - {fileID: 896415460}
   - {fileID: 1266441358}
   - {fileID: 723113140}
+  - {fileID: 180379296}
