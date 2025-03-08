@@ -10,6 +10,7 @@ public class ShipSpawner : MonoBehaviour
     private bool isSpawning = false;
     private float lambda = 0.1f;
     private int maxTicks = 10;
+    int[] possibleSize = { 100, 200, 300, 400 };
 
     // Start is called before the first frame update
     void Start()
@@ -36,12 +37,14 @@ public class ShipSpawner : MonoBehaviour
 
             yield return new WaitForSeconds(spawnInterval);
             GameObject newShip = Instantiate(shipPrefab, GetRandomPosition(), Quaternion.identity);
+            float zScale = possibleSize[Random.Range(0, possibleSize.Length)];
+            newShip.transform.localScale = new Vector3(50, 15, zScale);
             ShipController shipController = newShip.GetComponent<ShipController>();
 
             if (shipController != null)
             {
                 shipController.SetShipData(ship);
-                Debug.Log("Ship " + ship.shipName + " spawned!");
+                Debug.Log("Ship " + ship.shipName + " spawned!" + zScale);
                 shipCount+=1;
             }
             else
