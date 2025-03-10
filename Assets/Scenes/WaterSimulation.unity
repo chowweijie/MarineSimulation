@@ -268,7 +268,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132486048}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0fed615a26f576148b0fdd57837ae3be, type: 3}
   m_Name: 
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 132486048}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f8ad6edad26f6a428c7a64427cbd4af, type: 3}
   m_Name: 
@@ -302,7 +302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridWorldSize: {x: 0, y: 0}
-  nodeRadius: 50
+  nodeRadius: 100
 --- !u!1 &139188739
 GameObject:
   m_ObjectHideFlags: 0
@@ -1637,7 +1637,6 @@ GameObject:
   m_Component:
   - component: {fileID: 896415460}
   - component: {fileID: 896415459}
-  - component: {fileID: 896415458}
   m_Layer: 0
   m_Name: SpawnAreaLeft
   m_TagString: Untagged
@@ -1645,21 +1644,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &896415458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 896415457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2d85c98f6926cf4899136376e5071cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shipPrefab: {fileID: 599984515367979046, guid: f8ad511f45008ca4fb2949c7dd45ae0b,
-    type: 3}
-  spawnArea: {fileID: 896415459}
 --- !u!65 &896415459
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2719,6 +2703,55 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 532391147}
   m_SourcePrefab: {fileID: 100100000, guid: 09b8270a5e7afae42aece385a3c2560e, type: 3}
+--- !u!1 &1864703317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1864703319}
+  - component: {fileID: 1864703318}
+  m_Layer: 0
+  m_Name: ShipSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1864703318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864703317}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2d85c98f6926cf4899136376e5071cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipPrefab: {fileID: 599984515367979046, guid: f8ad511f45008ca4fb2949c7dd45ae0b,
+    type: 3}
+  spawnArea: {fileID: 0}
+  leftSpawnArea: {fileID: 896415460}
+  rightSpawnArea: {fileID: 1957647071}
+--- !u!4 &1864703319
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1864703317}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1847.1078, y: -484.00845, z: 7383.2324}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1875502699
 GameObject:
   m_ObjectHideFlags: 0
@@ -2888,7 +2921,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1957647071}
   - component: {fileID: 1957647070}
-  - component: {fileID: 1957647072}
   m_Layer: 0
   m_Name: SpawnAreaRight
   m_TagString: Untagged
@@ -2932,21 +2964,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1957647072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1957647069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b2d85c98f6926cf4899136376e5071cd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  shipPrefab: {fileID: 599984515367979046, guid: f8ad511f45008ca4fb2949c7dd45ae0b,
-    type: 3}
-  spawnArea: {fileID: 1957647070}
 --- !u!1 &1970859193
 GameObject:
   m_ObjectHideFlags: 0
@@ -3174,3 +3191,4 @@ SceneRoots:
   - {fileID: 1266441358}
   - {fileID: 723113140}
   - {fileID: 180379296}
+  - {fileID: 1864703319}

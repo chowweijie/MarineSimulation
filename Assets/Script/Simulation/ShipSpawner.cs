@@ -12,6 +12,8 @@ public class ShipSpawner : MonoBehaviour
     private int maxTicks = 10;
     int[] possibleSize = { 100, 200, 300, 400 };
     private Quaternion rotation = Quaternion.Euler(0, 90, 0);
+    public Transform leftSpawnArea;
+    public Transform rightSpawnArea;
 
     // Start is called before the first frame update
     void Start()
@@ -29,24 +31,16 @@ public class ShipSpawner : MonoBehaviour
 
         while (isSpawning && tickCount < maxTicks)
         {
-            if (BerthManager.Instance == null)
-            {
-                Debug.LogError("BerthManager is not initialized! Make sure it is present in the scene.");
-            }
             string targetBerth = BerthManager.Instance.GetAvailableBerth();
-            if (targetBerth == null)
-            {
-                Debug.Log("No available berth!");
-                yield break;
-            }
             ShipInfo ship = new ShipInfo()
             {
                 shipName = "Ship " + shipCount,
-                speed = 100f,
+                speed = 200f,
                 targetName = targetBerth
             };
 
             yield return new WaitForSeconds(spawnInterval);
+
             GameObject newShip = Instantiate(shipPrefab, GetRandomPosition(), rotation);
             float zScale = possibleSize[Random.Range(0, possibleSize.Length)];
             newShip.transform.localScale = new Vector3(50, 15, zScale);
@@ -68,15 +62,19 @@ public class ShipSpawner : MonoBehaviour
         Debug.Log("Simulation ended!");
     }
 
-    Vector3 GetRandomPosition()
+    public Vector3 GetRandomPosition()
     {
+        if(Random.value > 0.5f){
+                spawnArea = leftSpawnArea.GetComponent<BoxCollider>();
+                rotation = Quaternion.Euler(0, 90, 0);
+            } else {
+                spawnArea = rightSpawnArea.GetComponent<BoxCollider>();
+                rotation = Quaternion.Euler(0, -90, 0);
+            }
         if (spawnArea == null)
         {
             Debug.LogError("Spawn Area is not set!");
             return Vector3.zero;
-        }
-        if (spawnArea.name == "SpawnAreaRight"){
-            rotation = Quaternion.Euler(0, -90, 0);
         }
         Vector3 center = spawnArea.transform.position;
         Vector3 size = spawnArea.size;
