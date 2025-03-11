@@ -17,6 +17,7 @@ public class ShipController : MonoBehaviour
     public ShipSpawner shipSpawner;
     private GameObject targetObject;
     private bool isExit = false;
+    private string lane = "incoming";
 
     // Start is called before the first frame update
     void Start()
@@ -49,13 +50,19 @@ public class ShipController : MonoBehaviour
     void UpdatePath()
     {
         // Debug.Log("Updating path");
-        path = pathFinder.FindPath(transform.position, target.position);
+        path = pathFinder.FindPath(transform.position, target.position, lane);
         targetIndex = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (isExit) {
+            lane = "outgoing";
+        }
+        else {
+            lane = "incoming";
+        }
         Vector3 currentPosition = transform.position;
         currentPosition.y = 0;
         transform.position = currentPosition;

@@ -11,7 +11,7 @@ public class PathFinding : MonoBehaviour
         grid = FindObjectOfType<AStarGrid>();
     }
     
-    public List<Node> FindPath(Vector3 startPos, Vector3 targetPos)
+    public List<Node> FindPath(Vector3 startPos, Vector3 targetPos, string lane)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
@@ -43,12 +43,12 @@ public class PathFinding : MonoBehaviour
 
             foreach (Node neighbour in grid.GetNeighbours(currentNode))
             {
-                if (!neighbour.walkable)
+                if (!neighbour.walkable || closeSet.Contains(neighbour))
                 {
                     continue;
                 }
 
-                if(closeSet.Contains(neighbour))
+                if (neighbour.lane != lane && neighbour.lane != "none")
                 {
                     continue;
                 }

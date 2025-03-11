@@ -36,6 +36,8 @@ public class AStarGrid : MonoBehaviour
         grid = new Node[gridSizeX, gridSizeY];
         LayerMask unwalkableMask = LayerMask.GetMask("unwalkableMask");
         LayerMask berths = LayerMask.GetMask("Berths");
+        LayerMask incoming = LayerMask.GetMask("Incoming");
+        LayerMask outgoing = LayerMask.GetMask("Outgoing");
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -43,6 +45,15 @@ public class AStarGrid : MonoBehaviour
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = true;
+                string lane = "none";
+                if (Physics.CheckSphere(worldPoint, nodeRadius, incoming))
+                {
+                    lane = "incoming";
+                }
+                else if (Physics.CheckSphere(worldPoint, nodeRadius, outgoing))
+                {
+                    lane = "outgoing";
+                }
                 if (Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask))
                 {
                     walkable = false;
@@ -51,7 +62,7 @@ public class AStarGrid : MonoBehaviour
                 {
                     walkable = true;
                 }
-                grid[x, y] = new Node(walkable, worldPoint, x, y);
+                grid[x, y] = new Node(walkable, worldPoint, x, y, lane);
             }
         }
     }
@@ -100,6 +111,19 @@ public class AStarGrid : MonoBehaviour
                 Gizmos.color = (n.walkable && !n.occupied) ? Color.white : Color.red;
                 Gizmos.DrawWireSphere(n.worldPosition, nodeRadius);
             }
+            foreach (Node n in grid) {
+                if (n.lane == "incoming")
+                {
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawWireSphere(n.worldPosition, nodeRadius);
+                }
+                else if (n.lane == "outgoing")
+                {
+                    Gizmos.color = Color.green;
+                    Gizmos.DrawWireSphere(n.worldPosition, nodeRadius);
+                }
+            }
         }
+        
     }
 }

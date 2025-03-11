@@ -12,14 +12,16 @@ public class Node
     public int hCost;
     public Node parent;
     public bool occupied;
+    public string lane;
 
-    public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
+    public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY, string _lane)
     {
         walkable = _walkable;
         worldPosition = _worldPos;
         gridX = _gridX;
         gridY = _gridY;
         occupied = false;
+        lane = _lane;
     }
 
     public int fCost
