@@ -200,8 +200,13 @@ public class ShipController : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         Debug.Log(gameObject.name + " finished unloading!");
-        BerthManager.Instance.ReleaseBerth(target.name);
 
+        while(!trafficManager.RequestOutgoingPermission(gameObject.name, bay)){
+            Debug.Log("Permission denied to exit " + berth.name);
+            yield return new WaitForSeconds(2f);
+        }
+        Debug.Log("Permission granted to exit " + berth.name);
+        BerthManager.Instance.ReleaseBerth(target.name);
         targetObject = new GameObject("Target");
         targetObject.transform.position = shipSpawner.GetRandomPosition();
         target = targetObject.transform;

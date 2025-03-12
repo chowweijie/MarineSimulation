@@ -31,6 +31,7 @@ public class TrafficManager : MonoBehaviour
 
     public bool RequestIncomingPermission(string ship, string bay){
         if(approvedShips.Contains(ship)){
+            approvedShips.Remove(ship);
             return true;
         }
         else if(deniedShips.Contains(ship)){
@@ -45,6 +46,32 @@ public class TrafficManager : MonoBehaviour
             }
             else if(bay == "Bay 3"){
                 Bay3IncomingQueue.Enqueue(ship);
+            }
+            deniedShips.Add(ship);
+            return false;
+        }
+    }
+
+    public bool RequestOutgoingPermission(string ship, string bay){
+        if(approvedShips.Contains(ship)){
+            approvedShips.Remove(ship);
+            return true;
+        }
+        else if(deniedShips.Contains(ship)){
+            return false;
+        }
+        else{
+            if(bay == "Bay 1"){
+                Bay1OutgoingQueue.Enqueue(ship);
+            }
+            else if(bay == "Bay 2"){
+                Bay2OutgoingQueue.Enqueue(ship);
+            }
+            else if(bay == "Bay 3"){
+                Bay3OutgoingQueue.Enqueue(ship);
+            }
+            else if(bay == "none"){
+                return true;
             }
             deniedShips.Add(ship);
             return false;
@@ -77,6 +104,39 @@ public class TrafficManager : MonoBehaviour
         if(Bay3IncomingQueue.Count > 0){
             if(lastBay3Incoming){
                 string ship = Bay3IncomingQueue.Dequeue();
+                deniedShips.Remove(ship);
+                approvedShips.Add(ship);
+                lastBay3Incoming = false;
+            }
+            else{
+                lastBay3Incoming = true;
+            }
+        }
+        if(Bay1OutgoingQueue.Count > 0){
+            if(!lastBay1Incoming){
+                string ship = Bay1OutgoingQueue.Dequeue();
+                deniedShips.Remove(ship);
+                approvedShips.Add(ship);
+                lastBay1Incoming = false;
+            }
+            else{
+                lastBay1Incoming = true;
+            }
+        }
+        if(Bay2OutgoingQueue.Count > 0){
+            if(!lastBay2Incoming){
+                string ship = Bay2OutgoingQueue.Dequeue();
+                deniedShips.Remove(ship);
+                approvedShips.Add(ship);
+                lastBay2Incoming = false;
+            }
+            else{
+                lastBay2Incoming = true;
+            }
+        }
+        if(Bay3OutgoingQueue.Count > 0){
+            if(!lastBay3Incoming){
+                string ship = Bay3OutgoingQueue.Dequeue();
                 deniedShips.Remove(ship);
                 approvedShips.Add(ship);
                 lastBay3Incoming = false;
