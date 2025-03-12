@@ -35,7 +35,7 @@ public class ShipSpawner : MonoBehaviour
             ShipInfo ship = new ShipInfo()
             {
                 shipName = "Ship " + shipCount,
-                speed = 100f,
+                speed = 200f,
                 targetName = targetBerth
             };
 
