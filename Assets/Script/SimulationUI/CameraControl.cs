@@ -64,7 +64,7 @@ public class CameraControl : MonoBehaviour
                 moveCamera = false;
             }
             Vector3 delta = Input.mousePosition - currentPos;
-            Debug.Log(delta);
+            // Debug.Log(delta);
             transform.Rotate(Vector3.up, delta.x * rotateSpeed * Time.deltaTime, Space.World);
             transform.Rotate(Vector3.right, -delta.y * rotateSpeed * Time.deltaTime, Space.Self);
             currentPos = Input.mousePosition;
@@ -75,7 +75,7 @@ public class CameraControl : MonoBehaviour
             {
                 currentPos = Input.mousePosition;
                 moveCamera = true;
-                Debug.Log("Moving Camera");
+                // Debug.Log("Moving Camera");
             }
         }
     }

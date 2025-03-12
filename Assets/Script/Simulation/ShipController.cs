@@ -67,19 +67,20 @@ public class ShipController : MonoBehaviour
         currentPosition.y = 0;
         transform.position = currentPosition;
 
+        if (Vector3.Distance(transform.position, target.position) < nodeRadius*2 && isExit)
+        {
+            Debug.Log("Ship has exited the simulation!");
+            FreeNode();
+            Destroy(gameObject);
+            Destroy(targetObject);
+        }
+
         if (path == null || path.Count == 0)
         {
             // Debug.Log("No path found");
             if (Vector3.Distance(transform.position, target.position) < nodeRadius && !isUnloading)
             {
                 StartCoroutine(UnloadShip());
-            }
-            if (Vector3.Distance(transform.position, target.position) < nodeRadius*2 && isExit)
-            {
-                Debug.Log("Ship has exited the simulation!");
-                FreeNode();
-                Destroy(gameObject);
-                Destroy(targetObject);
             }
             // Debug.Log("No path found" + gameObject.name);
             return;

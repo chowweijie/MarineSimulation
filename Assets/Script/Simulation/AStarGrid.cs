@@ -38,6 +38,7 @@ public class AStarGrid : MonoBehaviour
         LayerMask berths = LayerMask.GetMask("Berths");
         LayerMask incoming = LayerMask.GetMask("Incoming");
         LayerMask outgoing = LayerMask.GetMask("Outgoing");
+        LayerMask intersection = LayerMask.GetMask("Intersection");
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
         for (int x = 0; x < gridSizeX; x++)
         {
@@ -53,6 +54,10 @@ public class AStarGrid : MonoBehaviour
                 else if (Physics.CheckSphere(worldPoint, nodeRadius, outgoing))
                 {
                     lane = "outgoing";
+                }
+                if (Physics.CheckSphere(worldPoint, nodeRadius, intersection))
+                {
+                    lane = "none";
                 }
                 if (Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask))
                 {
