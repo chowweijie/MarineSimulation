@@ -11,7 +11,7 @@ public class ShipController : MonoBehaviour
     private int targetIndex;
     public float speed = 1f;
     public float waypointDistance = 10f;
-    private float turnSpeed = 50f;
+    private float turnSpeed = 25f;
     private bool isUnloading = false;
     public float nodeRadius = 100f;
     public ShipSpawner shipSpawner;
@@ -50,7 +50,7 @@ public class ShipController : MonoBehaviour
     void UpdatePath()
     {
         // Debug.Log("Updating path");
-        path = pathFinder.FindPath(transform.position, target.position, lane);
+        path = pathFinder.FindPath(transform.position, target.position, lane, gameObject.name);
         targetIndex = 0;
     }
 
@@ -73,6 +73,7 @@ public class ShipController : MonoBehaviour
             FreeNode();
             Destroy(gameObject);
             Destroy(targetObject);
+            return;
         }
 
         if (path == null || path.Count == 0)
@@ -117,7 +118,12 @@ public class ShipController : MonoBehaviour
     void OccupyNode()
     {
         Node node = grid.NodeFromWorldPoint(transform.position);
-        node.occupied = true;
+        node.occupiedBy = gameObject.name;
+
+        foreach (Node neighbour in grid.GetNeighbours(node))
+        {
+            neighbour.occupiedBy = gameObject.name;
+        }
     }
 
     void FreeNode()
@@ -125,13 +131,11 @@ public class ShipController : MonoBehaviour
         LayerMask unwalkableMask = LayerMask.GetMask("unwalkableMask");
         LayerMask berths = LayerMask.GetMask("Berths");
         Node node = grid.NodeFromWorldPoint(transform.position);
-        if (!Physics.CheckSphere(node.worldPosition, nodeRadius, unwalkableMask))
+        node.occupiedBy = "none";
+
+        foreach (Node neighbour in grid.GetNeighbours(node))
         {
-            node.occupied = false;
-        }
-        if (Physics.CheckSphere(node.worldPosition, nodeRadius, berths))
-        {
-            node.occupied = false;
+            neighbour.occupiedBy = "none";
         }
     }
 

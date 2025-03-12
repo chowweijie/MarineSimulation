@@ -11,7 +11,7 @@ public class PathFinding : MonoBehaviour
         grid = FindObjectOfType<AStarGrid>();
     }
     
-    public List<Node> FindPath(Vector3 startPos, Vector3 targetPos, string lane)
+    public List<Node> FindPath(Vector3 startPos, Vector3 targetPos, string lane, string name)
     {
         Node startNode = grid.NodeFromWorldPoint(startPos);
         Node targetNode = grid.NodeFromWorldPoint(targetPos);
@@ -49,6 +49,11 @@ public class PathFinding : MonoBehaviour
                 }
 
                 if (neighbour.lane != lane && neighbour.lane != "none")
+                {
+                    continue;
+                }
+
+                if (neighbour.occupiedBy != "none" && neighbour.occupiedBy != name)
                 {
                     continue;
                 }

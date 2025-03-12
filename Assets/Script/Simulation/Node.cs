@@ -13,6 +13,7 @@ public class Node
     public Node parent;
     public bool occupied;
     public string lane;
+    public string occupiedBy = "none";
 
     public Node(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY, string _lane)
     {

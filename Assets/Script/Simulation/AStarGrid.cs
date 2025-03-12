@@ -127,6 +127,11 @@ public class AStarGrid : MonoBehaviour
                     Gizmos.color = Color.green;
                     Gizmos.DrawWireSphere(n.worldPosition, nodeRadius);
                 }
+                else if (n.occupiedBy.Contains("Ship"))
+                {
+                    Gizmos.color = Color.yellow;
+                    Gizmos.DrawWireSphere(n.worldPosition, nodeRadius);
+                }
             }
         }
         
