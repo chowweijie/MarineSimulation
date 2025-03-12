@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShipController : MonoBehaviour
 {
     public Transform target;
+    public Transform berth;
     public AStarGrid grid;
     private PathFinding pathFinder;
     private List<Node> path = new List<Node>();
@@ -15,14 +16,20 @@ public class ShipController : MonoBehaviour
     private bool isUnloading = false;
     public float nodeRadius = 100f;
     public ShipSpawner shipSpawner;
+    public BayManager bayManager;
+    public TrafficManager trafficManager;
     private GameObject targetObject;
     private bool isExit = false;
+    private bool entryPermitted = false;
     private string lane = "incoming";
+    private string bay = "none";
 
     // Start is called before the first frame update
     void Start()
     {
+        bayManager = FindObjectOfType<BayManager>();
         shipSpawner = FindObjectOfType<ShipSpawner>();
+        trafficManager = FindObjectOfType<TrafficManager>();
         if (target == null) {
         Debug.LogError("Target not assigned in the ShipController!");
         }
@@ -31,8 +38,32 @@ public class ShipController : MonoBehaviour
         Debug.LogError("Grid not assigned in the ShipController!");
         }
         OccupyNode();
+        berth = target;
+        GetBay();
         pathFinder = FindObjectOfType<PathFinding>();
-        InvokeRepeating("UpdatePath", 0f, 5f);
+        InvokeRepeating("UpdatePath", 0f, 2f);
+    }
+
+    private void GetBay(){
+        string[] parts = target.name.Split(' ');
+        int num = int.Parse(parts[1]);
+        if(num<3){
+            bay = "none";
+            entryPermitted = true;
+            return;
+        }
+        else if(num<15){
+            bay = "Bay 1";
+        }
+        else if(num<27){
+            bay = "Bay 2";
+        }
+        else if(num<38){
+            bay = "Bay 3";  
+        }
+        targetObject = new GameObject("Target");
+        targetObject.transform.position = bayManager.GetRandomPosition(bay);
+        target = targetObject.transform;
     }
 
     public void SetShipData(ShipInfo shipData)
@@ -65,9 +96,10 @@ public class ShipController : MonoBehaviour
         }
         Vector3 currentPosition = transform.position;
         currentPosition.y = 0;
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
         transform.position = currentPosition;
 
-        if (Vector3.Distance(transform.position, target.position) < nodeRadius*2 && isExit)
+        if (Vector3.Distance(transform.position, target.position) < nodeRadius*3 && isExit)
         {
             Debug.Log("Ship has exited the simulation!");
             FreeNode();
@@ -76,10 +108,18 @@ public class ShipController : MonoBehaviour
             return;
         }
 
+        if (Vector3.Distance(transform.position, target.position) < nodeRadius*2 && !isUnloading && !entryPermitted)
+        {
+            GetPermission();
+            Debug.Log("Requesting to enter " + berth.name);
+        }
+
+        // UpdatePath();
+
         if (path == null || path.Count == 0)
         {
             // Debug.Log("No path found");
-            if (Vector3.Distance(transform.position, target.position) < nodeRadius && !isUnloading)
+            if (Vector3.Distance(transform.position, berth.position) < nodeRadius*2 && !isUnloading)
             {
                 StartCoroutine(UnloadShip());
             }
@@ -113,6 +153,19 @@ public class ShipController : MonoBehaviour
         }
 
         OccupyNode();
+    }
+
+    void GetPermission()
+    {
+        if(trafficManager.RequestIncomingPermission(gameObject.name, bay)){
+            entryPermitted = true;
+            target = berth;
+            Destroy(targetObject);
+            Debug.Log("Permission granted to enter " + berth.name);
+        }
+        else{
+            Debug.Log("Permission denied to enter " + berth.name);
+        }
     }
 
     void OccupyNode()
