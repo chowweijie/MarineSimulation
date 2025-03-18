@@ -227,6 +227,13 @@ public class ShipController : MonoBehaviour
     {
         isUnloading = true;
         Debug.Log(gameObject.name + " has arrived at " + target.name + ". Unloading..." + time);
+        float length = gameObject.transform.localScale.z;
+        if (length == 300){
+            time = time*2;
+        }
+        else if (length == 400){
+            time = time*3;
+        }
 
         FreeNode();
         Node node = grid.NodeFromWorldPoint(transform.position);
