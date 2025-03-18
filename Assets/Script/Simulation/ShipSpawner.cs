@@ -8,12 +8,12 @@ public class ShipSpawner : MonoBehaviour
     public BoxCollider spawnArea;
     private List<ShipInfo> shipList = new List<ShipInfo>();
     private bool isSpawning = false;
-    private float lambda = 0.1f;
-    private int maxTicks = 10;
+    private float lambda = 0.02f;
     int[] possibleSize = { 100, 200, 300, 400 };
     private Quaternion rotation = Quaternion.Euler(0, 90, 0);
     public Transform leftSpawnArea;
     public Transform rightSpawnArea;
+    private int maxTicks = 10000;
 
     // Start is called before the first frame update
     void Start()
@@ -30,17 +30,22 @@ public class ShipSpawner : MonoBehaviour
 
         for (int i = 0; i < shipCount; i++)
         {
-            bool atBerth = Random.value > 0.5f;
+            bool atBerth = Random.value > 0.2f;
             string targetBerth = BerthManager.Instance.GetAvailableBerth();
             ShipInfo ship = new ShipInfo()
             {
-                shipName = "Ship " + i,
-                speed = 100f,
+                shipName = "Starter Ship " + i,
+                speed = 30*30/3.6f,
                 targetName = targetBerth
             };
 
             GameObject newShip = Instantiate(shipPrefab, GetRandomStarterPosition(targetBerth, atBerth), rotation);
             ShipController shipController = newShip.GetComponent<ShipController>();
+
+            if (atBerth)
+            {
+                shipController.SetBerthSpawn();
+            }
 
             if (shipController != null)
             {
@@ -59,36 +64,46 @@ public class ShipSpawner : MonoBehaviour
         float spawnInterval = -Mathf.Log(1 - Random.value) / lambda;
         int shipCount = 1;
         int tickCount = 0;
+        float tickSinceSpawn = 0;
         Debug.Log(maxTicks);
+        Debug.Log(spawnInterval);
 
         while (isSpawning && tickCount < maxTicks)
         {
-            string targetBerth = BerthManager.Instance.GetAvailableBerth();
-            ShipInfo ship = new ShipInfo()
+            if (tickSinceSpawn > spawnInterval)
             {
-                shipName = "Ship " + shipCount,
-                speed = 100f,
-                targetName = targetBerth
-            };
+                spawnInterval = -Mathf.Log(1 - Random.value) / lambda;
+                tickSinceSpawn = 0;
+                Debug.Log("Spawning ship " + shipCount + " in " + spawnInterval + " ticks");
 
-            yield return new WaitForSeconds(spawnInterval);
+                string targetBerth = BerthManager.Instance.GetAvailableBerth();
+                ShipInfo ship = new ShipInfo()
+                {
+                    shipName = "Ship " + shipCount,
+                    speed = 30*30/3.6f,
+                    targetName = targetBerth
+                };
 
-            GameObject newShip = Instantiate(shipPrefab, GetRandomSpawnPosition(), rotation);
-            float zScale = possibleSize[Random.Range(0, possibleSize.Length)];
-            newShip.transform.localScale = new Vector3(50, 15, zScale);
-            ShipController shipController = newShip.GetComponent<ShipController>();
+                GameObject newShip = Instantiate(shipPrefab, GetRandomSpawnPosition(), rotation);
+                float zScale = possibleSize[Random.Range(0, possibleSize.Length)];
+                newShip.transform.localScale = new Vector3(50, 15, zScale);
+                ShipController shipController = newShip.GetComponent<ShipController>();
 
-            if (shipController != null)
-            {
-                shipController.SetShipData(ship);
-                Debug.Log("Ship " + ship.shipName + " spawned!" + zScale);
-                shipCount+=1;
+                if (shipController != null)
+                {
+                    shipController.SetShipData(ship);
+                    Debug.Log("Ship " + ship.shipName + " spawned!" + zScale);
+                    shipCount+=1;
+                }
+                else
+                {
+                    Debug.LogError("ShipController not found in the ship prefab!");
+                }
             }
-            else
-            {
-                Debug.LogError("ShipController not found in the ship prefab!");
-            }
+            
+            yield return new WaitForSeconds(1);
             tickCount++;
+            tickSinceSpawn++;
         }
 
         Debug.Log("Simulation ended!");

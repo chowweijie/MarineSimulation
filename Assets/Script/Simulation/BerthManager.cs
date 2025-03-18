@@ -33,6 +33,7 @@ public class BerthManager : MonoBehaviour
             string berth = availableBerths[Random.Range(0, availableBerths.Count)];
             availableBerths.Remove(berth);
             occupiedBerths.Add(berth);
+            Debug.Log("Remaining Berths: " + availableBerths.Count);
             return berth;
         }
         else

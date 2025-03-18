@@ -13,7 +13,7 @@ public class ShipController : MonoBehaviour
     public float speed = 1f;
     public float waypointDistance = 10f;
     private float turnSpeed = 0.5f;
-    private float turnRate = 0.1f;
+    // private float turnRate = 0.1f;
     private bool isUnloading = false;
     public float nodeRadius = 100f;
     public ShipSpawner shipSpawner;
@@ -22,13 +22,12 @@ public class ShipController : MonoBehaviour
     private GameObject targetObject;
     private bool isExit = false;
     private bool entryPermitted = false;
+    private bool isSpawn = false;
     private string lane = "incoming";
     private string bay = "none";
     public float maxTurnAngle = 30f;  // Maximum rudder turn angle
-    public float movementSpeed = 100f; // Forward speed
     public float rudderSensitivity = 1f; // Sensitivity for steering
-
-    private float currentTurnAngle = 0f; // The current rudder angle
+    // private float currentTurnAngle = 0f; // The current rudder angle
 
     // Start is called before the first frame update
     void Start()
@@ -45,11 +44,20 @@ public class ShipController : MonoBehaviour
         }
         OccupyNode();
         berth = target;
-        if (!isUnloading) {
+        if (!isSpawn) {
             GetBay();
         }
+        else if (entryPermitted) {
+            StartCoroutine(UnloadShip(Random.Range(1, 720)));
+        }
         pathFinder = FindObjectOfType<PathFinding>();
-        InvokeRepeating("UpdatePath", 0f, 2f);
+        InvokeRepeating("UpdatePath", 0f, 1.5f);
+    }
+
+    public void SetBerthSpawn()
+    {
+        isSpawn = true;
+        entryPermitted = true;
     }
 
     private void GetBay(){
@@ -165,7 +173,7 @@ public class ShipController : MonoBehaviour
                     transform.Rotate(Vector3.up, angleToTarget * turnSpeed * Time.deltaTime);
 
                     // Move forward with inertia
-                    transform.Translate(forwardDirection * speed/2 * Time.deltaTime, Space.World);
+                    transform.Translate(forwardDirection * speed/4 * Time.deltaTime, Space.World);
                 }
                 else
                 {
@@ -215,12 +223,16 @@ public class ShipController : MonoBehaviour
         }
     }
 
-    IEnumerator UnloadShip()
+    IEnumerator UnloadShip(int time = 720)
     {
         isUnloading = true;
-        Debug.Log(gameObject.name + " has arrived at " + target.name + ". Unloading...");
+        Debug.Log(gameObject.name + " has arrived at " + target.name + ". Unloading..." + time);
 
-        yield return new WaitForSeconds(5f);
+        FreeNode();
+        Node node = grid.NodeFromWorldPoint(transform.position);
+        node.occupiedBy = gameObject.name;
+
+        yield return new WaitForSeconds(time);
 
         Debug.Log(gameObject.name + " finished unloading!");
 
