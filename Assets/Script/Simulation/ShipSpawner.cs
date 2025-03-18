@@ -35,7 +35,7 @@ public class ShipSpawner : MonoBehaviour
             ShipInfo ship = new ShipInfo()
             {
                 shipName = "Ship " + i,
-                speed = 200f,
+                speed = 100f,
                 targetName = targetBerth
             };
 
@@ -67,7 +67,7 @@ public class ShipSpawner : MonoBehaviour
             ShipInfo ship = new ShipInfo()
             {
                 shipName = "Ship " + shipCount,
-                speed = 200f,
+                speed = 100f,
                 targetName = targetBerth
             };
 

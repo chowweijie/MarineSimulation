@@ -12,7 +12,8 @@ public class ShipController : MonoBehaviour
     private int targetIndex;
     public float speed = 1f;
     public float waypointDistance = 10f;
-    private float turnSpeed = 25f;
+    private float turnSpeed = 0.5f;
+    private float turnRate = 0.1f;
     private bool isUnloading = false;
     public float nodeRadius = 100f;
     public ShipSpawner shipSpawner;
@@ -23,6 +24,11 @@ public class ShipController : MonoBehaviour
     private bool entryPermitted = false;
     private string lane = "incoming";
     private string bay = "none";
+    public float maxTurnAngle = 30f;  // Maximum rudder turn angle
+    public float movementSpeed = 100f; // Forward speed
+    public float rudderSensitivity = 1f; // Sensitivity for steering
+
+    private float currentTurnAngle = 0f; // The current rudder angle
 
     // Start is called before the first frame update
     void Start()
@@ -143,14 +149,29 @@ public class ShipController : MonoBehaviour
             else{
                 if (angleDiff > 0.5f && !(Vector3.Distance(transform.position, path[targetIndex].worldPosition) < waypointDistance*2) && angleDiff != 180f)
                 {
-                    float rotationStep = Mathf.Min(angleDiff, turnSpeed * Time.deltaTime);
-                    Quaternion targetRotation = Quaternion.LookRotation(dir.normalized);
-                    transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, rotationStep);
+                    // Quaternion targetRotation = Quaternion.LookRotation(dir.normalized);
+                    // transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
+
+                    Vector3 forwardDirection = transform.forward;
+
+                    // Find the angle difference between the current direction and target
+                    float angleToTarget = Vector3.SignedAngle(forwardDirection, dir.normalized, Vector3.up);
+
+                    // Adjust the rudder smoothly based on the target direction
+                    // float turnInput = Mathf.Clamp(angleToTarget / maxTurnAngle, -1f, 1f);
+                    // currentTurnAngle = Mathf.Lerp(currentTurnAngle, turnInput * maxTurnAngle, rudderSensitivity * Time.deltaTime);
+
+                    // Apply gradual rotation like a real ship
+                    transform.Rotate(Vector3.up, angleToTarget * turnSpeed * Time.deltaTime);
+
+                    // Move forward with inertia
+                    transform.Translate(forwardDirection * speed/2 * Time.deltaTime, Space.World);
                 }
                 else
                 {
                     transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
                 }
+                
             }
         }
 
