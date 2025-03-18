@@ -39,7 +39,9 @@ public class ShipController : MonoBehaviour
         }
         OccupyNode();
         berth = target;
-        GetBay();
+        if (!isUnloading) {
+            GetBay();
+        }
         pathFinder = FindObjectOfType<PathFinding>();
         InvokeRepeating("UpdatePath", 0f, 2f);
     }
@@ -208,7 +210,7 @@ public class ShipController : MonoBehaviour
         Debug.Log("Permission granted to exit " + berth.name);
         BerthManager.Instance.ReleaseBerth(target.name);
         targetObject = new GameObject("Target");
-        targetObject.transform.position = shipSpawner.GetRandomPosition();
+        targetObject.transform.position = shipSpawner.GetRandomSpawnPosition();
         target = targetObject.transform;
         isExit = true;
     }

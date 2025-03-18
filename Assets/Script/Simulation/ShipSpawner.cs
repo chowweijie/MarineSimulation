@@ -19,7 +19,39 @@ public class ShipSpawner : MonoBehaviour
     void Start()
     {
         isSpawning = true;
+        SpawnStartShips();
         StartCoroutine(SpawnShips());
+    }
+
+    void SpawnStartShips()
+    {
+        int totalBerths = BerthManager.Instance.GetTotalBerths();
+        int shipCount = totalBerths / 2;
+
+        for (int i = 0; i < shipCount; i++)
+        {
+            bool atBerth = Random.value > 0.5f;
+            string targetBerth = BerthManager.Instance.GetAvailableBerth();
+            ShipInfo ship = new ShipInfo()
+            {
+                shipName = "Ship " + i,
+                speed = 200f,
+                targetName = targetBerth
+            };
+
+            GameObject newShip = Instantiate(shipPrefab, GetRandomStarterPosition(targetBerth, atBerth), rotation);
+            ShipController shipController = newShip.GetComponent<ShipController>();
+
+            if (shipController != null)
+            {
+                shipController.SetShipData(ship);
+                Debug.Log("Starter Ship " + ship.shipName + " spawned!");
+            }
+            else
+            {
+                Debug.LogError("ShipController not found in the ship prefab!");
+            }
+        }
     }
 
     IEnumerator SpawnShips()
@@ -41,7 +73,7 @@ public class ShipSpawner : MonoBehaviour
 
             yield return new WaitForSeconds(spawnInterval);
 
-            GameObject newShip = Instantiate(shipPrefab, GetRandomPosition(), rotation);
+            GameObject newShip = Instantiate(shipPrefab, GetRandomSpawnPosition(), rotation);
             float zScale = possibleSize[Random.Range(0, possibleSize.Length)];
             newShip.transform.localScale = new Vector3(50, 15, zScale);
             ShipController shipController = newShip.GetComponent<ShipController>();
@@ -62,7 +94,7 @@ public class ShipSpawner : MonoBehaviour
         Debug.Log("Simulation ended!");
     }
 
-    public Vector3 GetRandomPosition()
+    public Vector3 GetRandomSpawnPosition()
     {
         if(Random.value > 0.5f){
                 spawnArea = leftSpawnArea.GetComponent<BoxCollider>();
@@ -83,5 +115,20 @@ public class ShipSpawner : MonoBehaviour
         float z = Random.Range(center.z - size.z / 2, center.z + size.z / 2);
 
         return new Vector3(x, center.y, z);
+    }
+
+    public Vector3 GetRandomStarterPosition(string targetBerth, bool atBerth)
+    {
+        if (atBerth)
+        {
+            Transform target;
+            target = GameObject.Find(targetBerth).transform;
+            Vector3 targetPosition = target.position;
+            return targetPosition;
+        }
+        else
+        {
+            return GetRandomSpawnPosition();
+        }
     }
 }
