@@ -10,7 +10,7 @@ public class ShipController : MonoBehaviour
     private PathFinding pathFinder;
     private List<Node> path = new List<Node>();
     private int targetIndex;
-    public float speed = 1f;
+    public float speed = 20*30/3.6f;
     public float waypointDistance = 10f;
     private float turnSpeed = 0.5f;
     // private float turnRate = 0.1f;
@@ -68,13 +68,13 @@ public class ShipController : MonoBehaviour
             entryPermitted = true;
             return;
         }
-        else if(num<15){
+        else if(num<16){
             bay = "Bay 1";
         }
-        else if(num<27){
+        else if(num<28){
             bay = "Bay 2";
         }
-        else if(num<38){
+        else if(num<39){
             bay = "Bay 3";  
         }
         targetObject = new GameObject("Target");
@@ -189,9 +189,12 @@ public class ShipController : MonoBehaviour
             target = berth;
             Destroy(targetObject);
             Debug.Log("Permission granted to enter " + berth.name);
+            speed = 20*30/3.6f;
         }
         else{
             Debug.Log("Permission denied to enter " + berth.name);
+            speed = 20*30/3.6f;
+            speed = speed / 4;
         }
     }
 

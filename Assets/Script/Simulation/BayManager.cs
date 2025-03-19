@@ -23,14 +23,14 @@ public class BayManager : MonoBehaviour
     public Vector3 GetRandomPosition(string bay)
     {
         if(bay == "Bay 1"){
-                spawnArea = Bay1.GetComponent<BoxCollider>();
-            }
-            else if(bay == "Bay 2"){
-                spawnArea = Bay2.GetComponent<BoxCollider>();
-            }
-            else if(bay == "Bay 3"){
-                spawnArea = Bay3.GetComponent<BoxCollider>();
-            }
+            spawnArea = Bay1.GetComponent<BoxCollider>();
+        }
+        else if(bay == "Bay 2"){
+            spawnArea = Bay2.GetComponent<BoxCollider>();
+        }
+        else if(bay == "Bay 3"){
+            spawnArea = Bay3.GetComponent<BoxCollider>();
+        }
         if (spawnArea == null)
         {
             Debug.LogError("Bay Area is not set!");
