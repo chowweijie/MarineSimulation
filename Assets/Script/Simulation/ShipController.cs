@@ -124,7 +124,7 @@ public class ShipController : MonoBehaviour
             return;
         }
 
-        if (Vector3.Distance(transform.position, target.position) < nodeRadius*2 && !isUnloading && !entryPermitted)
+        if (!isUnloading && !entryPermitted)
         {
             GetPermission();
             Debug.Log("Requesting to enter " + berth.name);
@@ -164,10 +164,6 @@ public class ShipController : MonoBehaviour
 
                     // Find the angle difference between the current direction and target
                     float angleToTarget = Vector3.SignedAngle(forwardDirection, dir.normalized, Vector3.up);
-
-                    // Adjust the rudder smoothly based on the target direction
-                    // float turnInput = Mathf.Clamp(angleToTarget / maxTurnAngle, -1f, 1f);
-                    // currentTurnAngle = Mathf.Lerp(currentTurnAngle, turnInput * maxTurnAngle, rudderSensitivity * Time.deltaTime);
 
                     // Apply gradual rotation like a real ship
                     transform.Rotate(Vector3.up, angleToTarget * turnSpeed * Time.deltaTime);
@@ -226,7 +222,6 @@ public class ShipController : MonoBehaviour
     IEnumerator UnloadShip(int time = 720)
     {
         isUnloading = true;
-        Debug.Log(gameObject.name + " has arrived at " + target.name + ". Unloading..." + time);
         float length = gameObject.transform.localScale.z;
         if (length == 300){
             time = time*2;
@@ -234,6 +229,13 @@ public class ShipController : MonoBehaviour
         else if (length == 400){
             time = time*3;
         }
+        Debug.Log(gameObject.name + " has arrived at " + target.name + ". Unloading..." + time);
+        if(!isSpawn){
+            trafficManager.FreeQueue(bay);
+        }
+        // Quaternion targetRotation = Quaternion.Euler(0, 90, 0);
+        // transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 200 * Time.deltaTime);
+        transform.rotation = Quaternion.Euler(0, 90, 0);
 
         FreeNode();
         Node node = grid.NodeFromWorldPoint(transform.position);

@@ -8,12 +8,13 @@ public class ShipSpawner : MonoBehaviour
     public BoxCollider spawnArea;
     private List<ShipInfo> shipList = new List<ShipInfo>();
     private bool isSpawning = false;
-    private float lambda = 0.02f;
+    private float lambda = 0.015f;
     int[] possibleSize = { 100, 200, 300, 400 };
     private Quaternion rotation = Quaternion.Euler(0, 90, 0);
     public Transform leftSpawnArea;
     public Transform rightSpawnArea;
     private int maxTicks = 10000;
+    private float shipSpeed = 30*30/3.6f;
 
     // Start is called before the first frame update
     void Start()
@@ -35,7 +36,7 @@ public class ShipSpawner : MonoBehaviour
             ShipInfo ship = new ShipInfo()
             {
                 shipName = "Starter Ship " + i,
-                speed = 30*30/3.6f,
+                speed = shipSpeed,
                 targetName = targetBerth
             };
 
@@ -70,6 +71,12 @@ public class ShipSpawner : MonoBehaviour
 
         while (isSpawning && tickCount < maxTicks)
         {
+            if (BerthManager.Instance.GetRemainingBerths() == 0)
+            {
+                Debug.Log("No more berths available!");
+                continue;
+            }
+
             if (tickSinceSpawn > spawnInterval)
             {
                 spawnInterval = -Mathf.Log(1 - Random.value) / lambda;
@@ -80,7 +87,7 @@ public class ShipSpawner : MonoBehaviour
                 ShipInfo ship = new ShipInfo()
                 {
                     shipName = "Ship " + shipCount,
-                    speed = 30*30/3.6f,
+                    speed = shipSpeed,
                     targetName = targetBerth
                 };
 

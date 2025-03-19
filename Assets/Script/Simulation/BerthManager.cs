@@ -27,6 +27,10 @@ public class BerthManager : MonoBehaviour
         }
     }
 
+    public int GetRemainingBerths(){
+        return availableBerths.Count;
+    }
+
     public string GetAvailableBerth(){
         if(availableBerths.Count > 0)
         {
@@ -52,5 +56,6 @@ public class BerthManager : MonoBehaviour
             occupiedBerths.Remove(berth);
             availableBerths.Add(berth);
         }
+        Debug.Log("Remaining Berths: " + availableBerths.Count);
     }
 }
