@@ -1,2 +1,0 @@
-Ship: Starter Ship 0, Berth: Berth 4, Delay: 0 seconds, Total Time: 278.5757
-Ship: Starter Ship 6, Berth: Berth 32, Delay: 0 seconds, Total Time: 331.4062

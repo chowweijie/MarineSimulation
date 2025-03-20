@@ -11,14 +11,14 @@ public class TrafficManager : MonoBehaviour
     private Queue<string> Bay2OutgoingQueue = new Queue<string>();
     private Queue<string> Bay3IncomingQueue = new Queue<string>();
     private Queue<string> Bay3OutgoingQueue = new Queue<string>();
-    private bool lastBay1Incoming = true;
-    private bool lastBay2Incoming = true;
-    private bool lastBay3Incoming = true;
+    public bool lastBay1Incoming = true;
+    public bool lastBay2Incoming = true;
+    public bool lastBay3Incoming = true;
     public float trafficInterval = 5f;
     private List<string> approvedShips1 = new List<string>();
     private List<string> approvedShips2 = new List<string>();
     private List<string> approvedShips3 = new List<string>();
-    private List<string> deniedShips = new List<string>();
+    public List<string> deniedShips = new List<string>();
     private List<ShipDelayInfo> shipDelayList = new List<ShipDelayInfo>();
 
     public struct ShipDelayInfo
