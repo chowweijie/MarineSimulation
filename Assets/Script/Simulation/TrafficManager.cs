@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 public class TrafficManager : MonoBehaviour
 {
@@ -18,6 +19,23 @@ public class TrafficManager : MonoBehaviour
     private List<string> approvedShips2 = new List<string>();
     private List<string> approvedShips3 = new List<string>();
     private List<string> deniedShips = new List<string>();
+    private List<ShipDelayInfo> shipDelayList = new List<ShipDelayInfo>();
+
+    public struct ShipDelayInfo
+    {
+        public string ShipName;
+        public string BerthName;
+        public float DelayTime;
+        public float TotalTime;
+
+        public ShipDelayInfo(string shipName, float delayTime, float totalTime, string berthName)
+        {
+            ShipName = shipName;
+            BerthName = berthName;
+            DelayTime = delayTime;
+            TotalTime = totalTime;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -172,4 +190,21 @@ public class TrafficManager : MonoBehaviour
         }
     }
 
+    public void RegisterShipDelay(string ship, float delay, float totalTime, string berth)
+    {
+        shipDelayList.Add(new ShipDelayInfo(ship, delay, totalTime, berth));
+        SaveToFile(ship, delay, totalTime, berth);
+    }
+
+    private void SaveToFile(string ship, float delay, float totalTime, string berth)
+    {
+        string path = Application.dataPath + "/Logs/ShipDelay.txt";  // Saves in "Assets/Logs/"
+        string entry = $"Ship: {ship}, Berth: {berth}, Delay: {delay} seconds, Total Time: {totalTime}\n";
+        // Ensure the directory exists
+        Directory.CreateDirectory(Application.dataPath + "/Logs/");
+        System.IO.File.AppendAllText(path, entry);
+
+        Debug.Log("File saved at: " + path);
+        Debug.Log("Ship Delay saved to file");
+    }
 }

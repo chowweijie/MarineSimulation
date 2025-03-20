@@ -27,11 +27,17 @@ public class ShipController : MonoBehaviour
     private string bay = "none";
     public float maxTurnAngle = 30f;  // Maximum rudder turn angle
     public float rudderSensitivity = 1f; // Sensitivity for steering
-    // private float currentTurnAngle = 0f; // The current rudder angle
+    public bool isDelay = false;
+    public bool slowDown = false;
+    private float slowDownStartTime = 0;
+    private float startTime = 0;
+    public float totalDelayTime = 0;
+    private float totalTime = 0;
 
     // Start is called before the first frame update
     void Start()
     {
+        startTime = Time.time;
         bayManager = FindObjectOfType<BayManager>();
         shipSpawner = FindObjectOfType<ShipSpawner>();
         trafficManager = FindObjectOfType<TrafficManager>();
@@ -52,6 +58,24 @@ public class ShipController : MonoBehaviour
         }
         pathFinder = FindObjectOfType<PathFinding>();
         InvokeRepeating("UpdatePath", 0f, 1.5f);
+    }
+
+    private void CheckDelay()
+    {
+        if(isDelay)
+        {
+            if(!slowDown){
+                slowDown = true;
+                slowDownStartTime = Time.time;
+            }
+        }
+        else{
+            if(slowDown){
+                slowDown = false;
+                totalDelayTime += Time.time - slowDownStartTime;
+                slowDownStartTime = 0;
+            }
+        }
     }
 
     public void SetBerthSpawn()
@@ -104,6 +128,8 @@ public class ShipController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CheckDelay();
+
         if (isExit) {
             lane = "outgoing";
         }
@@ -117,6 +143,8 @@ public class ShipController : MonoBehaviour
 
         if (Vector3.Distance(transform.position, target.position) < nodeRadius*3 && isExit)
         {
+            totalTime = Time.time - startTime;
+            trafficManager.RegisterShipDelay(gameObject.name, totalDelayTime, totalTime, berth.name);
             Debug.Log("Ship has exited the simulation!");
             FreeNode();
             Destroy(gameObject);
@@ -185,6 +213,7 @@ public class ShipController : MonoBehaviour
     void GetPermission()
     {
         if(trafficManager.RequestIncomingPermission(gameObject.name, bay)){
+            isDelay = false;
             entryPermitted = true;
             target = berth;
             Destroy(targetObject);
@@ -193,6 +222,7 @@ public class ShipController : MonoBehaviour
         }
         else{
             Debug.Log("Permission denied to enter " + berth.name);
+            isDelay = true;
             speed = 20*30/3.6f;
             speed = speed / 4;
         }
@@ -250,9 +280,11 @@ public class ShipController : MonoBehaviour
 
         while(!trafficManager.RequestOutgoingPermission(gameObject.name, bay)){
             Debug.Log("Permission denied to exit " + berth.name);
+            isDelay = true;
             yield return new WaitForSeconds(2f);
         }
         Debug.Log("Permission granted to exit " + berth.name);
+        isDelay = false;
         BerthManager.Instance.ReleaseBerth(target.name);
         targetObject = new GameObject("Target");
         targetObject.transform.position = shipSpawner.GetRandomSpawnPosition();
