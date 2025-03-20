@@ -24,6 +24,37 @@ public class ShipSpawner : MonoBehaviour
         StartCoroutine(SpawnShips());
     }
 
+    private float GetRandomSize()
+    {
+        string[] possibleSize = { "120-180", "181-240", "241-320", "321-400", "401-450" };
+        float[] probability = { 28.3f, 23.5f, 30.2f, 17.4f, 0.6f};
+        float[] cumulativeProbability = new float[5];
+        for (int i = 0; i < 5; i++)
+        {
+            if (i == 0)
+            {
+                cumulativeProbability[i] = probability[i];
+            }
+            else
+            {
+                cumulativeProbability[i] = cumulativeProbability[i - 1] + probability[i];
+            }
+        }
+
+        float randomValue = Random.value * 100;
+        for (int i = 0; i < 5; i++)
+        {
+            if (randomValue <= cumulativeProbability[i])
+            {
+                string[] range = possibleSize[i].Split('-');
+                return Random.Range(float.Parse(range[0]), float.Parse(range[1]));
+            }
+        }
+
+        Debug.LogError("Random size not found!");
+        return 0;
+    }
+
     void SpawnStartShips()
     {
         int totalBerths = BerthManager.Instance.GetTotalBerths();
@@ -41,6 +72,8 @@ public class ShipSpawner : MonoBehaviour
             };
 
             GameObject newShip = Instantiate(shipPrefab, GetRandomStarterPosition(targetBerth, atBerth), rotation);
+            float zScale = GetRandomSize();
+            newShip.transform.localScale = new Vector3(50, 15, zScale);
             ShipController shipController = newShip.GetComponent<ShipController>();
 
             if (atBerth)
@@ -92,7 +125,7 @@ public class ShipSpawner : MonoBehaviour
                 };
 
                 GameObject newShip = Instantiate(shipPrefab, GetRandomSpawnPosition(), rotation);
-                float zScale = possibleSize[Random.Range(0, possibleSize.Length)];
+                float zScale = GetRandomSize();
                 newShip.transform.localScale = new Vector3(50, 15, zScale);
                 ShipController shipController = newShip.GetComponent<ShipController>();
 

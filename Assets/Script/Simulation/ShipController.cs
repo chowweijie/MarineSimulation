@@ -226,10 +226,10 @@ public class ShipController : MonoBehaviour
     {
         isUnloading = true;
         float length = gameObject.transform.localScale.z;
-        if (length == 300){
+        if (length >= 300 && length < 400){
             time = time*2;
         }
-        else if (length == 400){
+        else if (length >= 400){
             time = time*3;
         }
         Debug.Log(gameObject.name + " has arrived at " + target.name + ". Unloading..." + time);
