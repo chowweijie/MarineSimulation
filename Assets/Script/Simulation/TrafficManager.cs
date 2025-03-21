@@ -204,7 +204,7 @@ public class TrafficManager : MonoBehaviour
         Directory.CreateDirectory(Application.dataPath + "/Logs/");
         System.IO.File.AppendAllText(path, entry);
 
-        Debug.Log("File saved at: " + path);
-        Debug.Log("Ship Delay saved to file");
+        // Debug.Log("File saved at: " + path);
+        // Debug.Log("Ship Delay saved to file");
     }
 }

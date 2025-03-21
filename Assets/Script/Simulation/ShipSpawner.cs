@@ -85,7 +85,7 @@ public class ShipSpawner : MonoBehaviour
             if (shipController != null)
             {
                 shipController.SetShipData(ship);
-                Debug.Log("Starter Ship " + ship.shipName + " spawned!");
+                // Debug.Log("Starter Ship " + ship.shipName + " spawned!");
             }
             else
             {
@@ -100,8 +100,8 @@ public class ShipSpawner : MonoBehaviour
         int shipCount = 1;
         int tickCount = 0;
         float tickSinceSpawn = 0;
-        Debug.Log(maxTicks);
-        Debug.Log(spawnInterval);
+        // Debug.Log(maxTicks);
+        // Debug.Log(spawnInterval);
 
         while (isSpawning && tickCount < maxTicks)
         {
@@ -115,7 +115,7 @@ public class ShipSpawner : MonoBehaviour
             {
                 spawnInterval = -Mathf.Log(1 - Random.value) / lambda;
                 tickSinceSpawn = 0;
-                Debug.Log("Spawning ship " + shipCount + " in " + spawnInterval + " ticks");
+                // Debug.Log("Spawning ship " + shipCount + " in " + spawnInterval + " ticks");
 
                 string targetBerth = BerthManager.Instance.GetAvailableBerth();
                 ShipInfo ship = new ShipInfo()
@@ -133,7 +133,7 @@ public class ShipSpawner : MonoBehaviour
                 if (shipController != null)
                 {
                     shipController.SetShipData(ship);
-                    Debug.Log("Ship " + ship.shipName + " spawned!" + zScale);
+                    // Debug.Log("Ship " + ship.shipName + " spawned!" + zScale);
                     shipCount+=1;
                 }
                 else
@@ -147,7 +147,7 @@ public class ShipSpawner : MonoBehaviour
             tickSinceSpawn++;
         }
 
-        Debug.Log("Simulation ended!");
+        // Debug.Log("Simulation ended!");
         SceneManager.LoadSceneAsync(0);
     }
 

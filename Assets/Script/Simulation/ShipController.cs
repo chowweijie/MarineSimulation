@@ -145,7 +145,7 @@ public class ShipController : MonoBehaviour
         {
             totalTime = Time.time - startTime;
             trafficManager.RegisterShipDelay(gameObject.name, totalDelayTime, totalTime, berth.name);
-            Debug.Log("Ship has exited the simulation!");
+            // Debug.Log("Ship has exited the simulation!");
             FreeNode();
             Destroy(gameObject);
             Destroy(targetObject);
@@ -155,7 +155,7 @@ public class ShipController : MonoBehaviour
         if (!isUnloading && !entryPermitted)
         {
             GetPermission();
-            Debug.Log("Requesting to enter " + berth.name);
+            // Debug.Log("Requesting to enter " + berth.name);
         }
 
         // UpdatePath();
@@ -217,11 +217,11 @@ public class ShipController : MonoBehaviour
             entryPermitted = true;
             target = berth;
             Destroy(targetObject);
-            Debug.Log("Permission granted to enter " + berth.name);
+            // Debug.Log("Permission granted to enter " + berth.name);
             speed = 20*30/3.6f;
         }
         else{
-            Debug.Log("Permission denied to enter " + berth.name);
+            // Debug.Log("Permission denied to enter " + berth.name);
             isDelay = true;
             speed = 20*30/3.6f;
             speed = speed / 4;
@@ -262,7 +262,7 @@ public class ShipController : MonoBehaviour
         else if (length >= 400){
             time = time*3;
         }
-        Debug.Log(gameObject.name + " has arrived at " + target.name + ". Unloading..." + time);
+        // Debug.Log(gameObject.name + " has arrived at " + target.name + ". Unloading..." + time);
         if(!isSpawn){
             trafficManager.FreeQueue(bay);
         }
@@ -276,14 +276,14 @@ public class ShipController : MonoBehaviour
 
         yield return new WaitForSeconds(time);
 
-        Debug.Log(gameObject.name + " finished unloading!");
+        // Debug.Log(gameObject.name + " finished unloading!");
 
         while(!trafficManager.RequestOutgoingPermission(gameObject.name, bay)){
-            Debug.Log("Permission denied to exit " + berth.name);
+            // Debug.Log("Permission denied to exit " + berth.name);
             isDelay = true;
             yield return new WaitForSeconds(2f);
         }
-        Debug.Log("Permission granted to exit " + berth.name);
+        // Debug.Log("Permission granted to exit " + berth.name);
         isDelay = false;
         BerthManager.Instance.ReleaseBerth(target.name);
         targetObject = new GameObject("Target");

@@ -1,0 +1,7 @@
+Ship: Starter Ship 2, Berth: Berth 18, Delay: 0 seconds, Total Time: 323.4001
+Ship: Starter Ship 5, Berth: Berth 7, Delay: 0 seconds, Total Time: 334.3712
+Ship: Starter Ship 4, Berth: Berth 19, Delay: 0 seconds, Total Time: 436.9103
+Ship: Starter Ship 8, Berth: Berth 22, Delay: 0 seconds, Total Time: 534.7227
+Ship: Starter Ship 18, Berth: Berth 13, Delay: 0 seconds, Total Time: 548.1076
+Ship: Starter Ship 12, Berth: Berth 27, Delay: 0 seconds, Total Time: 587.3482
+Ship: Starter Ship 10, Berth: Berth 10, Delay: 0 seconds, Total Time: 645.642
