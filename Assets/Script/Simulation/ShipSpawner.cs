@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ShipSpawner : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public class ShipSpawner : MonoBehaviour
     private Quaternion rotation = Quaternion.Euler(0, 90, 0);
     public Transform leftSpawnArea;
     public Transform rightSpawnArea;
-    private int maxTicks = 10000;
+    private int maxTicks = 14400;
     private float shipSpeed = 20*30/3.6f;
 
     // Start is called before the first frame update
@@ -147,6 +148,7 @@ public class ShipSpawner : MonoBehaviour
         }
 
         Debug.Log("Simulation ended!");
+        SceneManager.LoadSceneAsync(0);
     }
 
     public Vector3 GetRandomSpawnPosition()
