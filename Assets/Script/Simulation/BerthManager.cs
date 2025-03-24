@@ -47,15 +47,14 @@ public class BerthManager : MonoBehaviour
         }
     }
 
-    public int GetTotalBerths(){
-        return maxBerths;
-    }
-
     public void ReleaseBerth(string berth){
         if(occupiedBerths.Contains(berth)){
             occupiedBerths.Remove(berth);
             availableBerths.Add(berth);
         }
         // Debug.Log("Remaining Berths: " + availableBerths.Count);
+    }
+    public int GetTotalBerths(){
+        return maxBerths;
     }
 }

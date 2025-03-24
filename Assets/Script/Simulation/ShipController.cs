@@ -185,9 +185,6 @@ public class ShipController : MonoBehaviour
             else{
                 if (angleDiff > 0.5f && !(Vector3.Distance(transform.position, path[targetIndex].worldPosition) < waypointDistance*2) && angleDiff != 180f)
                 {
-                    // Quaternion targetRotation = Quaternion.LookRotation(dir.normalized);
-                    // transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-
                     Vector3 forwardDirection = transform.forward;
 
                     // Find the angle difference between the current direction and target
